@@ -1,0 +1,37 @@
+{
+  "name": "umi-webpack",
+  "version": "0.0.2",
+  "description": "umi-webpack",
+  "main": "index.js",
+  "author": "LYH",
+  "license": "ISC",
+  "bin": {
+    "umi": "./index.js"
+  },
+  "dependencies": {
+    "babel-core": "^5.8.38",
+    "babel-eslint": "^6.1.0",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.0",
+    "babel-runtime": "^6.9.2",
+    "commander": "^2.9.0",
+    "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.23.1",
+    "eslint": "^2.9.0",
+    "eslint-plugin-react": "^5.2.2",
+    "eslint-watch": "^2.1.13",
+    "file-loader": "^0.9.0",
+    "glob": "^7.0.5",
+    "html-webpack-plugin": "^2.22.0",
+    "image-webpack-loader": "^1.8.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "lodash": "^4.13.1",
+    "open-browser-webpack-plugin": "0.0.2",
+    "style-loader": "^0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
