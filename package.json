@@ -1,10 +1,13 @@
 {
   "name": "umi-webpack",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "umi-webpack",
   "main": "index.js",
   "author": "LYH",
   "license": "ISC",
+  "bin": {
+    "umi": "./index.js"
+  },
   "devDependencies": {
     "babel-core": "^5.8.38",
     "babel-eslint": "^6.1.0",
