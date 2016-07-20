@@ -40,13 +40,13 @@ devConfig.output = {
     filename: 'bundle.js',
     publicPath: `http://localhost:${global.port}/`
 };
-
+console.log(path.resolve('app/index.html'))
 devConfig.plugins = [
     new HtmlWebpackPlugin({
       // template: path.resolve(__dirname, 'app/index.tpl.html'),
       template: pack.tplPath,
       inject: 'body',
-      filename: path.resolve('./index.html')
+      filename: 'index.html'
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),

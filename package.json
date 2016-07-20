@@ -1,6 +1,6 @@
 {
   "name": "umi-webpack",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "umi-webpack",
   "main": "index.js",
   "author": "LYH",
@@ -27,6 +27,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "yargs": "^3.21.0"
   }
 }
