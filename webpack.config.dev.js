@@ -1,10 +1,19 @@
 'use strict';
 var webpack = require('webpack'),
     path = require('path'),
+    fs = require('fs'),
     yargs = require('yargs'),
     OpenBrowserPlugin = require('open-browser-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  pack = require(path.resolve('./pack.js'));
+  pack = path.resolve('./pack.js'),
+ Pack;
+  if(!fs.existsSync(pack)){
+      log.error('no pack.js found.');
+      Pack = {};
+  }
+  else{
+      Pack = require(pack);
+  }
 
 global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
     .alias('P', 'production')
@@ -36,11 +45,11 @@ var config = {
 entry: [
     path.resolve(__dirname, 'node_modules/webpack/hot/dev-server'),
     require.resolve("webpack-dev-server/client/") + "?" +  "http://localhost" + ":" + global.port,
-    pack.enterPath     
+    Pack.enterPath     
 ],
   plugins: [
     new HtmlWebpackPlugin({
-      template: pack.tplPath,
+      template: Pack.tplPath,
       inject: 'body',
       filename: 'index.html'
     }),
