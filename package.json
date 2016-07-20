@@ -1,6 +1,6 @@
 {
   "name": "umi-webpack",
-  "version": "0.0.3",
+  "version": "0.0.7",
   "description": "umi-webpack",
   "main": "index.js",
   "author": "LYH",
@@ -16,6 +16,7 @@
     "babel-runtime": "^6.9.2",
     "copy-webpack-plugin": "^3.0.1",
     "css-loader": "^0.23.1",
+    "deep-merge": "^1.0.0",
     "file-loader": "^0.9.0",
     "glob": "^7.0.5",
     "html-webpack-plugin": "^2.22.0",
@@ -27,6 +28,7 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "yargs": "^3.21.0"
   }
 }

@@ -3,38 +3,43 @@ const webpack = require('webpack');
 const path = require('path');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const yargs = require('yargs');
+const pack = require(path.resolve('./pack.js'));
+const fs = require('fs');
+console.log(fs);
 
-const prog = require('commander');
+fs.mkdirSync(path.resolve('./build'));
 
-var command = function(c) {
-    prog
-        .command(c.command)
-        .description(c.description)
-        .action(c.action);
-};
-prog
-    .option('-P, --production', 'release for production')
-    .option('-p, --port [port]', 'port of the dev server')
-    .option('--quiet', 'quiet compile')
-    .option('--stdout', 'output to stdout');
+global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
+    .alias('P', 'production')
+    .alias('p', 'port')
+    .default('p', 9000)
+    .argv;
 
-global.port = prog.port || 9090;
-
-console.log(global.port)
+global.port = global.argv.p;
+global.prod = global.argv.production;
 
 const config = {
   devtool: 'cheap-source-map',
-  entry: [
-    `webpack-dev-server/client?http://localhost:${global.port}`,
-    path.resolve(__dirname, 'app/index.js')
-  ],
+
+entry: [
+  require.resolve("webpack-dev-server/client/") + "?" +  "http://localhost" + ":" + global.port,
+    pack.enterPath     
+],
+
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: '[chunkhash:8].bundle.js',
+    path: path.resolve('./build'),
+    filename: '[chunkhash:8].build.js',
     publicPath: '/'
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
+  },
+  resolveLoader: {
+      modulesDirectories: [
+          "web_loaders", "web_modules", "node_loaders", "node_modules",
+          require('path').resolve(__dirname, 'node_modules')
+      ]
   },
   module: {
     loaders: [

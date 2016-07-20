@@ -1,6 +1,19 @@
 'use strict';
 var webpack = require('webpack'),
-    path = require('path');
+    path = require('path'),
+    yargs = require('yargs'),
+    OpenBrowserPlugin = require('open-browser-webpack-plugin'),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
+  pack = require(path.resolve('./pack.js'));
+
+global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
+    .alias('P', 'production')
+    .alias('p', 'port')
+    .default('p', 9000)
+    .argv;
+
+global.port = global.argv.p;
+global.prod = global.argv.production;
 
 var config = {
   devtool: "source-map",
@@ -15,6 +28,30 @@ var config = {
           require('path').resolve(__dirname, 'node_modules')
       ]
   },
+  output: {                                   
+    path: path.resolve(__dirname, 'build'),
+    filename: 'bundle.js',
+    publicPath: `http://localhost:${global.port}/`
+},
+entry: [
+    path.resolve(__dirname, 'node_modules/webpack/hot/dev-server'),
+    require.resolve("webpack-dev-server/client/") + "?" +  "http://localhost" + ":" + global.port,
+    pack.enterPath     
+],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: pack.tplPath,
+      inject: 'body',
+      filename: 'index.html'
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development'),
+      __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new OpenBrowserPlugin({ url: `http://localhost:${global.port}/` })
+],
 
   module: {
     loaders: [
