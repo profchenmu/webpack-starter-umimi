@@ -9,7 +9,7 @@ const pack = path.resolve('./pack.js');
 
 let Pack;
 if(!fs.existsSync(pack)){
-      log.error('no pack.js found.');
+      console.log('no pack.js found.');
       Pack = {};
   }
   else{
