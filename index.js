@@ -1,21 +1,15 @@
 #!/usr/bin/env node
 
 'use strict';
-/*eslint no-console: 0*/
 
-var path = require('path'),
-    glob = require('glob'),
+var webpack = require('webpack'),
+	WebpackDevServer = require('webpack-dev-server'),
+    yargs = require('yargs'),
+	devConfig, prodConfig;
     
-    webpack = require('webpack'),
-	webpackDevServer = require('webpack-dev-server'),
-	devConfig = require('./webpack.config.dev.js'),
-    prodConfig = require('./webpack.config.prod.js');
-
-
-
 
 var baseConfig = function(config, contentBase) {
-  return new webpackDevServer(webpack(config), {
+  return new WebpackDevServer(webpack(config), {
     historyApiFallback: true,
     hot: true,
     inline: true,
@@ -25,18 +19,26 @@ var baseConfig = function(config, contentBase) {
     port: global.port
   });
 };
+
+global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
+    .alias('P', 'production')
+    .alias('p', 'port')
+    .default('p', 9000)
+    .argv;
+global.port = global.argv.p;
+global.prod = global.argv.production;
+
 var server;
-// console.log(prodConfig)
 if(global.prod) {
-    // webpack(prodConfig);
+    prodConfig = require('./webpack.config.prod.js');
     console.log("production mode...");
     webpack(prodConfig).run(function(a, stats){
         console.log(stats.toString({
             colors: true
         }));
     });
-    
 } else {
+    devConfig = require('./webpack.config.dev.js');
     server = baseConfig(devConfig, "/app");
     console.log("development mode...");
     server.listen(global.port, "localhost", function(err) {
