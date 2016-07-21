@@ -1,14 +1,23 @@
 #!/usr/bin/env node
 
 'use strict';
+const path = require('path');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const yargs = require('yargs');
+const fs = require('fs');
+let baseConfig, devConfig, prodConfig, server;
 
-var webpack = require('webpack'),
-	WebpackDevServer = require('webpack-dev-server'),
-    yargs = require('yargs'),
-	devConfig, prodConfig;
-    
+const pack = path.resolve('./pack.js');
 
-var baseConfig = function(config, contentBase) {
+if(!fs.existsSync(pack)){
+    console.log('no pack.js found.');
+    global.pack = {};
+}else{
+    global.pack = require(pack);
+}
+
+baseConfig = function(config, contentBase) {
   return new WebpackDevServer(webpack(config), {
     historyApiFallback: true,
     hot: true,
@@ -28,10 +37,9 @@ global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
 global.port = global.argv.p;
 global.prod = global.argv.production;
 
-var server;
 if(global.prod) {
     prodConfig = require('./webpack.config.prod.js');
-    console.log("production mode...");
+    console.log('production mode...');
     webpack(prodConfig).run(function(a, stats){
         console.log(stats.toString({
             colors: true
@@ -39,9 +47,9 @@ if(global.prod) {
     });
 } else {
     devConfig = require('./webpack.config.dev.js');
-    server = baseConfig(devConfig, "/app");
-    console.log("development mode...");
-    server.listen(global.port, "localhost", function(err) {
+    server = baseConfig(devConfig, global.pack.serverRoot || '/app');
+    console.log('development mode...');
+    server.listen(global.port, 'localhost', function(err) {
         if(err) {
             console.log(err);
         }

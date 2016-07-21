@@ -1,18 +1,9 @@
 'use strict';
 const webpack = require('webpack');
 const path = require('path');
-const fs = require('fs');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const pack = path.resolve('./pack.js');
-
-let Pack;
-if(!fs.existsSync(pack)){
-    console.log('no pack.js found.');
-    Pack = {};
-}else{
-    Pack = require(pack);
-}
+const Pack = global.pack;
 
 var config = {
     devtool: 'cheap-source-map',
