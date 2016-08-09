@@ -8,7 +8,6 @@ const Pack = global.pack;
 var config = {
     devtool: 'cheap-source-map',
     entry: [
-        `${require.resolve('webpack-dev-server/client/')}?http://localhost${global.port}`,
         Pack.enterPath || './app/index.js'
     ],
 
@@ -39,6 +38,14 @@ var config = {
             {
                 test: /(\.css|\.less)$/,
                 loaders: ["style", "css", "less"]
+            },
+            {
+                test: /\.(tpl|html)$/,
+                loader: 'ejs'
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,

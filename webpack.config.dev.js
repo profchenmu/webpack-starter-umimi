@@ -60,6 +60,14 @@ let config = {
                 loaders: ['style', 'css?sourceMap', 'less?sourceMap']
             },
             {
+                test: /\.(tpl|html)$/,
+                loader: 'ejs'
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
+            },
+            {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 loaders: [
                     'url?limit=10000&name=img/[hash:8].[name].[ext]',
