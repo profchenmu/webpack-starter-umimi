@@ -30,20 +30,6 @@ let config = {
         `${require.resolve('webpack-dev-server/client/')}?http://localhost:${global.port}`,
         Pack.enterPath || './app/index.js' 
     ],
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: Pack.tplPath || './app/index.tpl.html',
-            inject: 'body',
-            filename: 'index.html'
-        }),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development'),
-            __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
-        new OpenBrowserPlugin({ url: `http://localhost:${global.port}/` })
-    ],
     module: {
         loaders: [
             {
@@ -75,7 +61,26 @@ let config = {
                 ]
             }
         ]
-    }
+    },
+    
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: Pack.tplPath || './app/index.tpl.html',
+            inject: 'body',
+            filename: 'index.html'
+        }),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development'),
+            __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
+        }),
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
+        new OpenBrowserPlugin({ url: `http://localhost:${global.port}/` })
+    ],
 };
+
+if(Pack.plugins){
+    config.plugins = config.plugins.concat(Pack.plugins);
+}
 
 module.exports = config;
