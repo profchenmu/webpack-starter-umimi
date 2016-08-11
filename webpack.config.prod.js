@@ -37,7 +37,7 @@ var config = {
             },
             {
                 test: /(\.css|\.less)$/,
-                loaders: ["style", "css", "less"]
+                loaders: ['style', 'css', 'less']
             },
             {
                 test: /\.(tpl|html)$/,
@@ -48,7 +48,7 @@ var config = {
                 loader: 'json'
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i,
+                test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/i,
                 loaders: [
                     'url?limit=10000&name=[hash:8].[name].[ext]',
                     'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
@@ -75,5 +75,9 @@ var config = {
         new OpenBrowserPlugin({ url: `http://localhost:${global.port}/` })
     ]
 };
+
+if(Pack.plugins){
+    config.plugins = config.plugins.concat(Pack.plugins);
+}
 
 module.exports = config;
