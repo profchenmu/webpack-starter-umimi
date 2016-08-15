@@ -18,16 +18,24 @@ if(!fs.existsSync(pack)){
 }
 
 baseConfig = function(config, contentBase) {
-  return new WebpackDevServer(webpack(config), {
+  var cao = new WebpackDevServer(webpack(config), {
     historyApiFallback: true,
     hot: true,
-    inline: true,
+    inline: false,
     progress: true,
     contentBase: contentBase,
     stats: { colors: true },
-    port: global.port
+    port: global.port,
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    },
   });
+  console.log(cao);
+  return cao;
 };
+
 
 global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
     .alias('P', 'production')
