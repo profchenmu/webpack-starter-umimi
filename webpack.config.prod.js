@@ -4,6 +4,7 @@ const path = require('path');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Pack = global.pack;
+const _ = require('lodash');
 
 var config = {
     devtool: 'cheap-source-map',
@@ -76,8 +77,11 @@ var config = {
     ]
 };
 
-if(Pack.plugins){
-    config.plugins = config.plugins.concat(Pack.plugins);
+if(Pack.plugins && Pack.plugins.length>0){
+    _.each(Pack.plugins, function(e, i, l){
+        var temp = new webpack.ProvidePlugin(e);
+        config.plugins.push(temp);
+    });
 }
 
 module.exports = config;

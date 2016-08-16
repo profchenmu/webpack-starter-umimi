@@ -4,6 +4,7 @@ const path = require('path');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Pack = global.pack;
+const _ = require('lodash');
 
 let config = {
     devtool: 'source-map',
@@ -76,11 +77,15 @@ let config = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new OpenBrowserPlugin({ url: `http://localhost:${global.port}/` })
+
     ],
 };
 
-if(Pack.plugins){
-    config.plugins = config.plugins.concat(Pack.plugins);
+if(Pack.plugins && Pack.plugins.length>0){
+    _.each(Pack.plugins, function(e, i, l){
+        var temp = new webpack.ProvidePlugin(e);
+        config.plugins.push(temp);
+    });
 }
 
 module.exports = config;
