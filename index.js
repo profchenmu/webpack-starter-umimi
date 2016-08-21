@@ -32,7 +32,6 @@ baseConfig = function(config, contentBase) {
         'Access-Control-Allow-Headers': 'Content-Type'
     },
   });
-  console.log(cao);
   return cao;
 };
 
