@@ -19,26 +19,27 @@ if(!fs.existsSync(pack)){
 }
 
 baseConfig = function(config, contentBase) {
-  var cao = new WebpackDevServer(webpack(config), {
-    historyApiFallback: true,
-    hot: true,
-    inline: false,
-    progress: true,
-    contentBase: contentBase,
-    stats: { colors: true },
-    port: global.port,
-  });
-  return cao;
+	var cao = new WebpackDevServer(webpack(config), {
+		historyApiFallback: true,
+		hot: true,
+		inline: false,
+		progress: true,
+		contentBase: contentBase,
+		stats: { colors: true },
+		port: global.port,
+	});
+	return cao;
 };
 
 
-global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
+global.argv = yargs.boolean(['production'])
     .alias('P', 'production')
     .alias('p', 'port')
     .default('p', 9009)
     .argv;
 global.port = global.argv.p;
 global.prod = global.argv.production;
+global.target = pack.target || 'http://localhost:8080';
 
 if(global.prod) {
     prodConfig = require('./webpack.config.prod.js');
@@ -52,21 +53,13 @@ if(global.prod) {
     devConfig = require('./webpack.config.dev.js');
     server = baseConfig(devConfig, global.pack.serverRoot || '/app');
     var options = {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        // router: {
-        //     'http://localhost:8080/': 'http://localhost:8080/api'
-        // }                   
-        // pathRewrite: {
-        //     '^/wlt_ebp_web_dev_1.2.0' : '/'
-        // }
-    };
-    var exampleProxy = proxy(options);
+        target: global.target,
+        changeOrigin: true
+    },
+    	exampleProxy = proxy(options);
 
     server.use('/api', exampleProxy);
 
-    // create the proxy (without context)
-    var exampleProxy = proxy(options);
     console.log('development mode...');
     server.listen(global.port, 'localhost', function(err) {
         if(err) {
