@@ -6,6 +6,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const yargs = require('yargs');
 const fs = require('fs');
+const proxy = require('http-proxy-middleware');
 let baseConfig, devConfig, prodConfig, server;
 
 const pack = path.resolve('./pack.js');
@@ -26,11 +27,6 @@ baseConfig = function(config, contentBase) {
     contentBase: contentBase,
     stats: { colors: true },
     port: global.port,
-    headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-    },
   });
   return cao;
 };
@@ -39,7 +35,7 @@ baseConfig = function(config, contentBase) {
 global.argv = yargs.boolean(['stdout', 'production', 'quiet'])
     .alias('P', 'production')
     .alias('p', 'port')
-    .default('p', 9000)
+    .default('p', 9009)
     .argv;
 global.port = global.argv.p;
 global.prod = global.argv.production;
@@ -55,6 +51,22 @@ if(global.prod) {
 } else {
     devConfig = require('./webpack.config.dev.js');
     server = baseConfig(devConfig, global.pack.serverRoot || '/app');
+    var options = {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        // router: {
+        //     'http://localhost:8080/': 'http://localhost:8080/api'
+        // }                   
+        // pathRewrite: {
+        //     '^/wlt_ebp_web_dev_1.2.0' : '/'
+        // }
+    };
+    var exampleProxy = proxy(options);
+
+    server.use('/api', exampleProxy);
+
+    // create the proxy (without context)
+    var exampleProxy = proxy(options);
     console.log('development mode...');
     server.listen(global.port, 'localhost', function(err) {
         if(err) {
