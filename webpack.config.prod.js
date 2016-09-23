@@ -1,6 +1,7 @@
 'use strict';
 const webpack = require('webpack');
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Pack = global.pack;
@@ -15,7 +16,7 @@ var config = {
     output: {
         path: path.resolve('build'),
         filename: '[chunkhash:8].build.js',
-        publicPath: '/'
+        publicPath: './'
     },
     resolve: {
         extensions: ['', '.js', '.jsx'],
@@ -58,6 +59,11 @@ var config = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(['build'], {
+            root: path.resolve(),
+            verbose: true, 
+            dry: false
+        }),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production'),
             __DEV__: JSON.stringify(JSON.parse(process.env.DEBUG || 'false'))
