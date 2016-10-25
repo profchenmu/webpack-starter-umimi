@@ -58,7 +58,7 @@ let config = {
                 test: /\.(jpe?g|png|gif|svg|ttf|eot|woff|woff2)$/i,
                 loaders: [
                     'url?limit=10000&name=images/[hash:8].[name].[ext]',
-                    'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
+                    // 'image-webpack?{progressive:true, optimizationLevel: 7, interlaced: false, pngquant:{quality: "65-90", speed: 4}}'
                 ]
             }
         ]
