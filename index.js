@@ -31,15 +31,15 @@ baseConfig = function(config, contentBase) {
 	return cao;
 };
 
-
 global.argv = yargs.boolean(['production'])
     .alias('P', 'production')
     .alias('p', 'port')
     .default('p', 9009)
     .argv;
+    
 global.port = global.argv.p;
 global.prod = global.argv.production;
-global.target = pack.target || 'http://localhost:8080';
+global.target = global.pack.target || 'http://localhost:8080';
 
 if(global.prod) {
     prodConfig = require('./webpack.config.prod.js');
@@ -58,7 +58,7 @@ if(global.prod) {
     },
     	exampleProxy = proxy(options);
 
-    server.use('/api', exampleProxy);
+    server.use('/wlt_ebp_web_dev_1.6.0', exampleProxy);
 
     console.log('development mode...');
     server.listen(global.port, 'localhost', function(err) {
