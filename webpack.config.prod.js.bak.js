@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Pack = global.pack;
 const _ = require('lodash');
 
-let config = {
+var config = {
     // devtool: 'cheap-source-map',
     resolve: {
         extensions: ['', '.js', '.jsx'],
@@ -20,7 +20,7 @@ let config = {
         ]
     },
     externals: Pack.externals || [],
-    output: {                                   
+    output: {
         path: path.resolve('build'),
         filename: '[chunkhash:8].bundle.js',
         publicPath: './'
@@ -32,7 +32,7 @@ let config = {
     module: {
         loaders: [
             {
-                test: /\.js|jsx$/, 
+                test: /\.js|jsx$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'babel',
                 query: {
@@ -62,12 +62,6 @@ let config = {
         ]
     },
     plugins: [
-    	new HtmlWebpackPlugin({
-            template: Pack.tplPath || './app/index.tpl.html',
-            filename: 'index.html',
-            inject: true
-        }),
-	
         new CleanWebpackPlugin(['build'], {
             root: path.resolve(),
             verbose: true, 
@@ -79,10 +73,15 @@ let config = {
         }),
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.OccurenceOrderPlugin(),
-	    new webpack.optimize.UglifyJsPlugin({
+        new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false
             }
+        }),
+        new HtmlWebpackPlugin({
+            template: Pack.tplPath || './app/index.tpl.html',
+            filename: 'index.html',
+            inject: true
         })
     ]
 };
